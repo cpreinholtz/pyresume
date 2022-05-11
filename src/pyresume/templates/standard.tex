@@ -53,6 +53,7 @@
   {% elif count == 3 %}
 \noindent\begin{tabu*} to \textwidth { @{} X[1,l] X[1,c] X[1,r] }
   {% endif %}
+
   {% if "contact" in basic and basic.contact|length > 0 %}
     {% if "email" in basic.contact %}
 \href{{lb}}mailto:{{basic.contact.email}}{{rb}}{{lb}}{{basic.contact.email}}{{rb}}\par
@@ -64,6 +65,7 @@
 &
     {% endif %}
   {% endif %}
+
   {% if "address" in basic %}
     {% for line in basic.address %}
   {{line}} \par
@@ -72,20 +74,25 @@
 &
     {% endif %}
   {% endif %}
+
   {% if "websites" in basic and basic.websites|length > 0 %}
     {% for website in basic.websites %}
 \noindent\href{ {{website.url}} }{ {{website.text}} }\par
     {% endfor %}
   {% endif %}
+
 \end{tabu*}
 {% endif %}
+
+
 {% if objective is defined %}
 \sectionheader{Objective}
 {{ objective }}
 \bigskip
 {% endif %}
-{% if (skills is defined and
-       skills|length > 0) %}
+
+
+{% if (skills is defined and skills|length > 0) %}
 \sectionheader{Technical Skills Summary}
 
 \noindent\begin{tabu} to \textwidth { @{} X[2,l] X[5,p] }
@@ -99,10 +106,12 @@
 {{category.category}} & {{ category.skills|join(', ') }} \\
     {% endif %}
   {% endfor %}
-
 \end{tabu}
 \bigskip
 {% endif %}
+
+
+
 {% if experience is defined %}
 \sectionheader{Experience}
   {% for job in experience %}
@@ -110,7 +119,14 @@
   \ &\ &\ \\
   \large{}\bf{} {{job.company}} & \multicolumn{2}{@{} l}{ {% if 'url' in job %} {{job.url}} {% else %}\ {% endif %}} \\
     {% for title in job.titles %}
-  \multicolumn{2}{@{} l}{\bf{}\indent{}{{title.name}} } & {{title.startdate}} - {{title.enddate}} \\
+      \multicolumn{2}{@{} l}{\bf{}\indent{}{{title.name}} } & {{title.startdate}} - {{title.enddate}} \\
+      {% if job.title.projects|length > 0 %}
+      \begin{myitemize}
+        {% for project in job.title.projects %}
+      \item {{project}}
+        {% endfor %}
+        \end{myitemize}
+      {% endif %}
     {% endfor %}
 \end{tabu}
     {% if job.projects|length > 0 %}
@@ -122,7 +138,7 @@
     {% endif %}
   \medskip
   {% endfor %}
-{% endif %}
+{% endif %} 
 {% if education is defined %}
 
 \sectionheader{Education}
